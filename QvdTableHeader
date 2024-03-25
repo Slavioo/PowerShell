@@ -1,0 +1,11 @@
+# Define the path to the XML file
+$xmlFilePath = "path\to\your\file.xml"
+
+# Read the XML file and cast it as an XML object
+[xml]$xmlContent = Get-Content $xmlFilePath -Raw
+
+# Use Select-Xml to extract the QvdTableHeader element
+$qvdTableHeader = $xmlContent | Select-Xml -XPath "//QvdTableHeader"
+
+# Output the QvdTableHeader XML content
+$qvdTableHeader.Node.OuterXml
