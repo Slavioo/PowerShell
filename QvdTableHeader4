@@ -1,0 +1,38 @@
+# Define the path to your QVD file
+$qvdFilePath = "path\to\your.qvd"
+
+# Open the file stream for reading
+$reader = [System.IO.StreamReader]::new($qvdFilePath)
+
+# Initialize a variable to hold the header content
+$headerContent = ""
+
+# Read the file line by line
+while (($line = $reader.ReadLine()) -ne $null) {
+    # Append the line to the header content
+    $headerContent += $line
+
+    # Check if the end of the QvdTableHeader has been reached
+    if ($line -match '</QvdTableHeader>') {
+        break
+    }
+}
+
+# Close the file stream
+$reader.Close()
+
+# Convert the header content to an XML object
+$xml = [xml]$headerContent
+
+# Extract the value of the FieldName element
+$fieldNameValue = $xml.QvdTableHeader.Fields.QvdFieldHeader.FieldName
+
+# Check if the FieldName value is '_Outdated'
+if ($fieldNameValue -eq '_Outdated') {
+    # Delete the QVD file
+    Remove-Item -Path $qvdFilePath
+    Write-Output "The QVD file has been deleted because it is outdated."
+} else {
+    # Output a message that the QVD is valid
+    Write-Output "The QVD file is valid and will not be deleted."
+}
