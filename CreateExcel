@@ -1,0 +1,12 @@
+# Install the ImportExcel module if it's not already installed
+Install-Module -Name ImportExcel -Scope CurrentUser
+
+# Create a new Excel file with a worksheet and some data
+$data = @(
+    [PSCustomObject]@{Name='John Doe'; Department='Sales'; Location='New York'}
+    [PSCustomObject]@{Name='Jane Smith'; Department='HR'; Location='London'}
+    [PSCustomObject]@{Name='Jim Brown'; Department='IT'; Location='San Francisco'}
+)
+
+# Export the data to an Excel file
+$data | Export-Excel -Path 'C:\path\to\your\new\file.xlsx' -WorksheetName 'Employees' -AutoSize
